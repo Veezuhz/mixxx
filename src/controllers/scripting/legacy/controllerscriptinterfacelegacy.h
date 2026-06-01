@@ -64,6 +64,18 @@ class ControllerScriptInterfaceLegacy : public QObject {
     // track/waveform is loaded. Lets controllers with screens (e.g. DDJ-FLX10)
     // render waveforms without an external daemon.
     Q_INVOKABLE QJSValue getWaveformSummary(const QString& group, int nPoints);
+    // Returns the loaded track's beatgrid info as a flat JS array
+    // [beatLengthSeconds, firstDownbeatSeconds] (the first downbeat = the
+    // grid's first marker, which Mixxx anchors at a downbeat). Returns null if
+    // no track/beatgrid. Lets a controller screen draw a beat-aligned grid with
+    // the correct downbeat phase and exact (un-rounded) beat spacing.
+    Q_INVOKABLE QJSValue getBeatInfo(const QString& group);
+    // Returns the loaded track's cover art, scaled + centre-cropped to a square
+    // `size`x`size` (default 240, the DDJ-FLX10 jog-screen art size) and
+    // JPEG-encoded, as a flat JS array of byte values (0..255). Returns null if
+    // no track/cover. Lets a controller screen show real album art without an
+    // external daemon.
+    Q_INVOKABLE QJSValue getCoverArt(const QString& group, int size = 0);
     Q_INVOKABLE double getValue(const QString& group, const QString& name);
     Q_INVOKABLE void setValue(const QString& group, const QString& name, double newValue);
     Q_INVOKABLE double getParameter(const QString& group, const QString& name);
